@@ -1,5 +1,6 @@
 package bestDAOU.PicMessage_backend.service.impl;
 
+import bestDAOU.PicMessage_backend.dto.CreateMemberDto;
 import bestDAOU.PicMessage_backend.dto.MemberDto;
 import bestDAOU.PicMessage_backend.entity.Member;
 import bestDAOU.PicMessage_backend.exception.ResourceNotFoundException;
@@ -19,9 +20,17 @@ public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
 
     @Override
-    public MemberDto createMember(MemberDto memberDto) {
-        Member member = MemberMapper.mapToMember(memberDto);
+    public MemberDto createMember(CreateMemberDto createMemberDto) {
+        // CreateMemberDto에서 Member 엔티티로 변환
+        Member member = new Member();
+        member.setName(createMemberDto.getName());
+        member.setPassword(createMemberDto.getPassword());
+        member.setEmail(createMemberDto.getEmail());
+
+        // 회원 저장
         Member savedMember = memberRepository.save(member);
+
+        // 저장된 Member 엔티티를 MemberDto로 변환하여 반환
         return MemberMapper.mapToMemberDto(savedMember);
     }
 
